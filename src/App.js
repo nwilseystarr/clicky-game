@@ -14,29 +14,34 @@ class App extends Component {
     this.state = {
       people,
       score: 0,
+      clickedIds: [],
     }
   }
 
   //onclick 
   //when click on card change value to true if is already true you lose 
-  checkScore(id) {
+  checkScore = id => {
     let arrayCopy = [...this.state.people]
-    console.log(this.state.people)
-    let selectedCard
+    let clickedIds = this.state.clickedIds;
+
+    if (clickedIds.includes(id)){
+      this.setState({clickedIds: [], score: 0})
+      alert("You lose")
+      return;
+    } else {
+      clickedIds.push(id)
+      if (clickedIds.length === 12){
+        alert("You win!")
+      }
+    }
+    
     arrayCopy.forEach(element => {
       if (element.id === id) {
         element.clicked = true
-        selectedCard = element
       }
     })
-
-    if (selectedCard.clicked === true) {
-      alert("Game Over")
-    } else {
       this.shuffleArray(arrayCopy)
       this.setState({ score: this.state.score + 1, people: arrayCopy })
-      console.log(this.state.score)
-    }
   }
 
   shuffleArray = (array) => {
@@ -49,12 +54,6 @@ class App extends Component {
     }
     return array;
   }
-
-
-  //check if the photo has been clicked 
-  //true = you lose 
-  //false = shuffle the cards
-
 
   render() {
     return (
