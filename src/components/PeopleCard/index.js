@@ -4,11 +4,9 @@ import "./style.css"
 
 function PeopleCard(props) {
     return (
-        <div className="card">
+        <div className="card" onClick={() => props.checkScore(props.id)}>
             <div className="img-container hover">
-                <img className="image" alt={props.name} src={props.image} id={props.id}
-                    onClick={() => props.checkScore(props.id)} className='checkScore' 
-                    />
+                <img className="image" alt={props.name} src={props.image} id={props.id} className='checkScore'/>
             </div>
         </div>
     );

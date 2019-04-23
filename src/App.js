@@ -15,6 +15,7 @@ class App extends Component {
       people,
       score: 0,
       clickedIds: [],
+      highScore: 0
     }
   }
 
@@ -24,24 +25,33 @@ class App extends Component {
     let arrayCopy = [...this.state.people]
     let clickedIds = this.state.clickedIds;
 
-    if (clickedIds.includes(id)){
-      this.setState({clickedIds: [], score: 0})
+    if (clickedIds.includes(id)) {
+      this.setState({ clickedIds: [], score: 0 })
+      if (this.state.score > this.state.highScore) {
+        this.setState({ highScore: this.state.score })
+      }
       alert("You lose")
       return;
     } else {
       clickedIds.push(id)
-      if (clickedIds.length === 12){
+      if (clickedIds.length === 12) {
+        this.setState({ highScore: this.state.score })
+        if (this.state.score > this.state.highScore) {
+          this.setState({ highScore: this.state.score })
+        }
         alert("You win!")
+        return;
       }
     }
-    
+
     arrayCopy.forEach(element => {
       if (element.id === id) {
         element.clicked = true
       }
     })
-      this.shuffleArray(arrayCopy)
-      this.setState({ score: this.state.score + 1, people: arrayCopy })
+
+    this.shuffleArray(arrayCopy)
+    this.setState({ score: this.state.score + 1, people: arrayCopy })
   }
 
   shuffleArray = (array) => {
@@ -58,7 +68,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar
+          score={this.state.score}
+          highScore={this.state.highScore}
+        />
         <Jumbotron />
         <Wrapper>
           {/*Why do we need state below?*/}
