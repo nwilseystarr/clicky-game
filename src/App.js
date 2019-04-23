@@ -15,31 +15,34 @@ class App extends Component {
       people,
       score: 0,
       clickedIds: [],
-      highScore: 0
-    }
+      highScore: 0,
+      status: 'Play the game!'
+    };
   }
 
-  //onclick 
   //when click on card change value to true if is already true you lose 
   checkScore = id => {
     let arrayCopy = [...this.state.people]
     let clickedIds = this.state.clickedIds;
 
+    //Incorrect Guess
     if (clickedIds.includes(id)) {
-      this.setState({ clickedIds: [], score: 0 })
+      this.setState({ clickedIds: [], score: 0, status: "You guessed incorrectly!" })
       if (this.state.score > this.state.highScore) {
         this.setState({ highScore: this.state.score })
       }
-      alert("You lose")
+
       return;
-    } else {
+    } 
+    //Correct Guess
+    else {
       clickedIds.push(id)
+      this.setState({ status: "You guessed correctly!" })
       if (clickedIds.length === 12) {
         this.setState({ highScore: this.state.score })
         if (this.state.score > this.state.highScore) {
           this.setState({ highScore: this.state.score })
         }
-        alert("You win!")
         return;
       }
     }
@@ -70,11 +73,11 @@ class App extends Component {
       <div>
         <Navbar
           score={this.state.score}
+          status={this.state.status} 
           highScore={this.state.highScore}
         />
-        <Jumbotron />
+        <Jumbotron/>
         <Wrapper>
-          {/*Why do we need state below?*/}
           {this.state.people.map(people => (
             <PeopleCard
               key={people.id}
